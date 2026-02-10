@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVC - Professional Anime Stream</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts: Plus Jakarta Sans (Modern & Professional) -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="flex h-screen overflow-hidden text-gray-300">
+
+    <!-- SIDEBAR -->
+    <aside class="w-20 md:w-64 glass-sidebar flex flex-col justify-between z-40 hidden md:flex">
+        <div>
+            <!-- Logo -->
+            <div class="h-20 flex items-center px-8">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/30 mr-3">
+                    <i class="fa-solid fa-play text-white text-xs"></i>
+                </div>
+                <div class="hidden md:block">
+                    <h1 class="text-xl font-bold tracking-tight text-white">EVC <span class="text-blue-500">Stream</span></h1>
+                </div>
+            </div>
+
+            <!-- Menu Utama -->
+            <nav class="mt-6 flex flex-col gap-1 px-3">
+                <p class="px-5 text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2 hidden md:block">Menu</p>
+                
+                <a href="#" onclick="switchTab('discover')" id="nav-discover" class="sidebar-link active flex items-center px-5 py-3.5 rounded-lg text-sm font-medium">
+                    <i class="fa-solid fa-compass text-lg w-8 text-center"></i>
+                    <span class="hidden md:block">Discover</span>
+                </a>
+
+                <a href="#" onclick="switchTab('library')" id="nav-library" class="sidebar-link flex items-center px-5 py-3.5 rounded-lg text-sm font-medium">
+                    <i class="fa-solid fa-folder-open text-lg w-8 text-center"></i>
+                    <span class="hidden md:block">My Library</span>
+                    <span id="lib-count" class="ml-auto bg-gray-800 text-gray-300 text-[10px] px-2 py-0.5 rounded-md hidden md:block border border-gray-700">0</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- User Profile -->
+        <div class="p-6 border-t border-gray-800/50">
+            <div class="flex items-center gap-3 p-2 rounded-xl hover:bg-white/5 transition cursor-pointer">
+                <img src="https://ui-avatars.com/api/?name=Pro+User&background=2563eb&color=fff&bold=true" class="w-9 h-9 rounded-full ring-2 ring-gray-800">
+                <div class="hidden md:block">
+                    <p class="text-sm font-bold text-white">Pro Member</p>
+                    <p class="text-[10px] text-green-400 flex items-center gap-1"><i class="fa-solid fa-circle text-[6px]"></i> Online</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-1 flex flex-col h-screen overflow-hidden relative bg-[#0b0c15]">
+        
+        <!-- HEADER (Glassmorphism) -->
+        <header class="h-20 glass flex items-center justify-between px-6 sticky top-0 z-30">
+            <!-- Mobile Toggle -->
+            <button class="md:hidden text-white mr-4"><i class="fa-solid fa-bars"></i></button>
+
+            <!-- Search Bar -->
+            <div class="relative w-full max-w-lg group">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 group-focus-within:text-blue-500 transition"></i>
+                <input type="text" id="searchInput" placeholder="Search anime, movies..." 
+                    class="w-full bg-[#15171e] border border-gray-800 text-gray-200 pl-11 pr-4 py-2.5 rounded-full focus:outline-none focus:border-blue-500 focus:bg-[#1a1d26] transition-all text-sm placeholder-gray-600">
+                <div id="search-loader" class="loader absolute right-4 top-3 hidden"></div>
+            </div>
+
+            <!-- Header Actions -->
+            <div class="flex items-center gap-3 ml-4">
+                <button class="w-10 h-10 rounded-full bg-[#15171e] border border-gray-800 flex items-center justify-center text-gray-400 hover:text-white hover:border-gray-600 transition relative">
+                    <i class="fa-regular fa-bell"></i>
+                    <span class="absolute top-2 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-[#15171e]"></span>
+                </button>
+            </div>
+        </header>
+
+        <!-- SCROLLABLE AREA -->
+        <div id="content-area" class="flex-1 overflow-y-auto p-6 pb-24 md:pb-8 scroll-smooth">
+            
+            <!-- VIEW: DISCOVER -->
+            <div id="view-discover">
+                <!-- Hero Section (Featured) -->
+                <div id="hero-section" class="mb-10 relative rounded-2xl overflow-hidden min-h-[300px] border border-gray-800 shadow-2xl">
+                    <!-- Default Skeleton -->
+                    <div class="absolute inset-0 bg-gray-900 animate-pulse"></div>
+                    <div class="relative z-10 p-8 md:p-12 flex flex-col justify-end h-[400px] bg-gradient-to-t from-[#0b0c15] via-[#0b0c15]/80 to-transparent">
+                        <div class="max-w-2xl">
+                            <span class="inline-block px-3 py-1 rounded bg-blue-600 text-white text-[10px] font-bold tracking-widest uppercase mb-3 shadow-lg shadow-blue-600/20">Featured</span>
+                            <h1 id="hero-title" class="text-3xl md:text-5xl font-extrabold text-white mb-4 leading-tight">Loading...</h1>
+                            <p id="hero-desc" class="text-gray-400 text-sm md:text-base line-clamp-2 mb-6 max-w-lg">Please wait while we fetch the latest top anime for you.</p>
+                            <div class="flex gap-4">
+                                <button id="hero-play-btn" class="px-8 py-3 bg-white text-black rounded-lg font-bold hover:bg-gray-200 transition flex items-center gap-2">
+                                    <i class="fa-solid fa-play"></i> Watch Trailer
+                                </button>
+                                <button id="hero-add-btn" class="px-8 py-3 bg-gray-800/80 backdrop-blur text-white rounded-lg font-bold hover:bg-gray-700 transition flex items-center gap-2 border border-gray-700">
+                                    <i class="fa-solid fa-plus"></i> My List
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <img id="hero-img" src="" class="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-overlay hidden" alt="Hero">
+                </div>
+
+                <!-- Genre Filters (FUNCTIONAL) -->
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold text-white">Explore Categories</h2>
+                    <div class="flex gap-2">
+                         <button class="w-8 h-8 rounded-full border border-gray-700 flex items-center justify-center hover:bg-gray-800 text-xs"><i class="fa-solid fa-chevron-left"></i></button>
+                         <button class="w-8 h-8 rounded-full border border-gray-700 flex items-center justify-center hover:bg-gray-800 text-xs"><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <div class="flex gap-3 overflow-x-auto pb-4 mb-8 no-scrollbar scroll-smooth" id="genre-container">
+                    <button onclick="fetchByGenre(null, this)" class="genre-btn active px-6 py-2.5 rounded-full bg-blue-600 text-white text-sm font-semibold shadow-lg shadow-blue-600/20 whitespace-nowrap transition">All</button>
+                    <button onclick="fetchByGenre(1, this)" class="genre-btn px-6 py-2.5 rounded-full bg-[#15171e] border border-gray-700 hover:border-gray-500 hover:text-white text-gray-400 text-sm font-medium whitespace-nowrap transition">Action</button>
+                    <button onclick="fetchByGenre(2, this)" class="genre-btn px-6 py-2.5 rounded-full bg-[#15171e] border border-gray-700 hover:border-gray-500 hover:text-white text-gray-400 text-sm font-medium whitespace-nowrap transition">Adventure</button>
+                    <button onclick="fetchByGenre(4, this)" class="genre-btn px-6 py-2.5 rounded-full bg-[#15171e] border border-gray-700 hover:border-gray-500 hover:text-white text-gray-400 text-sm font-medium whitespace-nowrap transition">Comedy</button>
+                    <button onclick="fetchByGenre(8, this)" class="genre-btn px-6 py-2.5 rounded-full bg-[#15171e] border border-gray-700 hover:border-gray-500 hover:text-white text-gray-400 text-sm font-medium whitespace-nowrap transition">Drama</button>
+                    <button onclick="fetchByGenre(10, this)" class="genre-btn px-6 py-2.5 rounded-full bg-[#15171e] border border-gray-700 hover:border-gray-500 hover:text-white text-gray-400 text-sm font-medium whitespace-nowrap transition">Fantasy</button>
+                    <button onclick="fetchByGenre(24, this)" class="genre-btn px-6 py-2.5 rounded-full bg-[#15171e] border border-gray-700 hover:border-gray-500 hover:text-white text-gray-400 text-sm font-medium whitespace-nowrap transition">Sci-Fi</button>
+                </div>
+
+                <!-- Grid -->
+                <div class="flex justify-between items-end mb-5">
+                    <h3 id="grid-title" class="text-xl font-bold text-white">Top Airing</h3>
+                </div>
+
+                <div id="discover-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
+                    <!-- Items -->
+                </div>
+            </div>
+
+            <!-- VIEW: LIBRARY -->
+            <div id="view-library" class="hidden">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-2xl font-bold text-white">My Library</h2>
+                    <div class="flex bg-[#15171e] rounded-lg p-1 border border-gray-800">
+                        <button onclick="filterLibrary('All')" class="lib-filter px-4 py-1.5 rounded-md text-xs font-bold text-white bg-gray-700 transition">All</button>
+                        <button onclick="filterLibrary('Watching')" class="lib-filter px-4 py-1.5 rounded-md text-xs font-bold text-gray-400 hover:text-white transition">Watching</button>
+                        <button onclick="filterLibrary('Completed')" class="lib-filter px-4 py-1.5 rounded-md text-xs font-bold text-gray-400 hover:text-white transition">Completed</button>
+                    </div>
+                </div>
+
+                <div id="library-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
+                    <!-- Items -->
+                </div>
+
+                <!-- Empty State -->
+                <div id="empty-library" class="hidden flex flex-col items-center justify-center py-20 text-center opacity-60">
+                    <i class="fa-solid fa-ghost text-6xl mb-4 text-gray-700"></i>
+                    <p class="text-gray-400">Your list is empty.</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- VIDEO PLAYER MODAL (CINEMA MODE) -->
+    <div id="video-modal" class="fixed inset-0 z-[100] bg-black/90 backdrop-blur-md hidden items-center justify-center p-4">
+        <div class="w-full max-w-5xl bg-[#0b0c15] rounded-2xl overflow-hidden shadow-2xl border border-gray-800 relative flex flex-col">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center p-4 border-b border-gray-800">
+                <h3 id="modal-title" class="text-white font-bold truncate pr-4">Video Title</h3>
+                <button onclick="closeVideo()" class="w-8 h-8 rounded-full bg-gray-800 hover:bg-red-600 text-white flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <!-- Video Container -->
+            <div class="relative pt-[56.25%] bg-black">
+                <iframe id="video-frame" class="absolute inset-0 w-full h-full" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <div id="no-video-msg" class="absolute inset-0 flex items-center justify-center text-gray-500 hidden">
+                    <p><i class="fa-solid fa-video-slash mr-2"></i> Trailer not available</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MOBILE NAV -->
+    <div class="md:hidden fixed bottom-0 left-0 w-full bg-[#0b0c15]/90 backdrop-blur border-t border-gray-800 flex justify-around p-3 z-50">
+        <button onclick="switchTab('discover')" class="nav-btn-mobile active text-blue-500 flex flex-col items-center">
+            <i class="fa-solid fa-compass text-xl mb-1"></i>
+            <span class="text-[10px]">Home</span>
+        </button>
+        <button onclick="switchTab('library')" class="nav-btn-mobile text-gray-500 flex flex-col items-center relative">
+            <i class="fa-solid fa-folder text-xl mb-1"></i>
+            <span class="text-[10px]">Library</span>
+            <span id="mobile-lib-count" class="absolute top-0 right-4 bg-blue-600 text-white text-[8px] w-3 h-3 flex items-center justify-center rounded-full">0</span>
+        </button>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast" class="fixed top-24 right-5 bg-[#15171e] border border-gray-700 text-white px-5 py-3 rounded-lg shadow-2xl transform translate-x-64 transition-transform duration-300 z-[90] flex items-center gap-3">
+        <div id="toast-icon" class="text-green-500"><i class="fa-solid fa-circle-check"></i></div>
+        <p id="toast-msg" class="text-sm font-medium">Notification</p>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
